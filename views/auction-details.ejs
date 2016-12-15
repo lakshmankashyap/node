@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <%- include('partials/head') %>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <div class="wrapper wrapper-content">
+        <div class="wrapper wrapper-content  animated fadeInRight">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="ibox-content">
+                        <button type="button" class="btn btn-primary btn-sm disabled auction-action" data-action="start-rodeshow">Start Road Show</button>
+                        <button type="button" class="btn btn-primary btn-sm disabled auction-action" data-action="start-auction">Start Auction</button>
+                        <button type="button" class="btn btn-primary btn-sm disabled auction-action" data-action="cease-bid-cancellation">Cease Cancellation Bids</button>
+                        <button type="button" class="btn btn-primary btn-sm disabled auction-action" data-action="complete-auction">Complete Auction</button>
+                        <button type="button" class="btn btn-primary btn-sm auction-action" data-action="cancel-auction">Cancel Auction</button>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Auction Details</h5>
+                        </div>
+                        <div class="ibox-content auction-details">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <dl>
+                                        <dt>Road Show Start At:</dt>
+                                        <dd class="road_show_start_date_time"></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Auction Start At:</dt>
+                                        <dd class="auction_start_date_time"></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Auction End At:</dt>
+                                        <dd class="auction_end_date_time"></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt> Bid Cancellation Cease From:</dt>
+                                        <dd class="cease_bid_cancellation_date_time"></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Status:</dt>
+                                        <dd class="auction-status"></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Number For Sale</dt>
+                                        <dd class="number_for_sale"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Place new Bid</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="bids-scale-box">
+                                <div class="bids-scale form-group"></div>
+                                <div class="competetive-bid-opt"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Placed Bids</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="bid-list-table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Image</th>
+                                                <th>User Name</th>
+                                                <th>Number</th>
+                                                <th>Value</th>
+                                                <th>Action</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="place-bid-modal" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Place Bid</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="#" onSubmit="placeBid(event);">
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Select User
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <select class="form-control user_sno">
+                                        <option value="1">Tyrion Lannister</option>
+                                        <option value="2">Khal Drogo</option>
+                                        <option value="3">Daenerys Targaryen (Khaleesi)</option>
+                                        <option value="4">Cersei Lannister</option>
+                                        <option value="5">John Snow</option>
+                                        <option value="6">Arya Stark</option>
+                                        <option value="7">Sansa Stark</option>
+                                        <option value="8">Ramsay Bolton</option>
+                                        <option value="9">Theon Greyjoy</option>
+                                        <option value="10">Margaery Tyrell</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                value
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <input type="number" class="form-control value" disabled value="0" placeholder="Value">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Number
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <input type="number" class="form-control number" value="" placeholder="Number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Allow Partial Fill
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                <label><input type="checkbox" class="allow_partial_fill" checked></label>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control auction_sno" value="0">
+                        <input type="submit" class="hidden">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-action="add" onclick="placeBid(event);" class="btn btn-primary save-company">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('partials/footer') %>
+    <%- include('partials/js') %>

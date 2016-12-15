@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <%- include('partials/head') %>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <div class="wrapper wrapper-content">
+        <div class="wrapper wrapper-content  animated fadeInRight">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Security List</h5>
+                            <div class="ibox-tools">
+                                <button type="button" onclick="$('#add-security-modal').modal('show');" class="btn btn-primary btn-xs">Create Security</button>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <table id="security-list-table" class="table table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sno</th>
+                                                    <th>Type</th>
+                                                    <th>Symbol</th>
+                                                    <th>Security Auction</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="list-group"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add-security-modal" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Create Security</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="#" onSubmit="createSecurity(event);">
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Company Name
+                            </label>
+                            <div class="col-lg-9 form-group">
+                                <select class='form-control' disabled id="company_sno" name="company_sno"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Symbol
+                            </label>
+                            <div class="col-lg-9 form-group">
+                                <input type="text" id="security_symbol" name="security_symbol" class="form-control" >
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Security Type
+                            </label>
+                            <div class="col-lg-9">
+                                <select class='form-control' id="security_type" name="security_type">
+                                    <option value="1" >Note</option>
+                                    <option value="2" >Share</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="submit" class="hidden">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-action="add" onclick="createSecurity(event);" class="btn btn-primary save-security">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-auction-modal" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Create Auction</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="add-auction-form" action="#">
+                        <input type="hidden" id="auction_id" name="auction_id" value="0">
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Security ID
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <select id="auction_security_sno" name="auction_security_sno" disabled class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Number For Sale
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <input type="number" id="number_for_sale" name="number_for_sale" class="form-control" value="1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Road Show Start Date Time
+                            </label>
+                            <div class="col-lg-9 form-group">
+                                <input type="text" name="road_show_start_date_time" id="road_show_start_date_time" class="form-control" placeholder="DD/MM/YYYY hh:mm">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Auction Start Date Time
+                            </label>
+                            <div class="col-lg-9 form-group">
+                                <input type="text" name="auction_start_date_time" id="auction_start_date_time" class="form-control" placeholder="DD/MM/YYYY hh:mm">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Auction End Date Time
+                            </label>
+                            <div class="col-lg-9 form-group">
+                                <input type="text" name="auction_end_date_time" id="auction_end_date_time" class="form-control" placeholder="DD/MM/YYYY hh:mm">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Cease Bid Cancellation Date Time
+                            </label>
+                            <div class="col-lg-9 form-group">
+                                <input type="text" name="cease_bid_cancellation_date_time" id="cease_bid_cancellation_date_time" class="form-control" placeholder="DD/MM/YYYY hh:mm">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Range 
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <label> Min: 
+                                        <input type="number" id="min_price" name="min_price" class="form-control" value="1">
+                                    </label>
+                                    <label> Max: 
+                                        <input type="number" id="max_price" name="max_price" class="form-control" value="2">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="hidden">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-action="add" onclick="$('#add-auction-form').submit();" class="btn btn-primary save-security">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="view-auction-modal" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">View Auction</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="#" onSubmit="saveAuction(event);">
+                        <input type="hidden" id="auction_id" name="auction_id" value="0">
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Security ID
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group security-id">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Number For Sale
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group number-for-sale">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Security Type
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group security-type">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Road Show Start Date Time
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group road-show-start-date-time">
+                                
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Auction Start Date Time
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group auction-start-date-time">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Auction End Date Time
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group auction-end-date-time">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Cease Bid Cancellation Date Time
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group cease-bid-cancellation-date-time">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Major Bids
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <span class="major-bids"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-lg-3 control-label">
+                                Minor Bids
+                            </label>
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <span class="minor-bids"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('partials/footer') %>
+    <%- include('partials/js') %>
