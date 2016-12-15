@@ -3,21 +3,35 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
-// var db = mongo.db("mongodb://localhost:27017/tnbx_node",{native_parser:true});
+var mongo = require('mongoskin');
+
+var db = mongo.db("mongodb://localhost:27017/tnbx_node",{native_parser:true});
+
 
 
 /* GET company page. */
-	newArray = [];
 router.get('/', function(req, res) {
-	req.db.collection('companies').find().each(function(err, doc) {
-		newArray.push(doc);
+	db.bind('companies');
+	db.companies.find().toArray(function(err, items) {
+		res.render('company', {
+			'title':'companies',
+			'companies':items
+		});
+	db.close();
 	});
-	console.log(newArray);
-	// res.render('company', {
-	// 	'title':'Company',
-	// 	'companies':newArray
+	// db.collection('companies').find().each(function(err, doc) {
+		// var company = {
+		// 	// id : doc._id,
+		// 	company_sno : doc.company_sno,
+		// 	company_id : doc.company_id,
+		// 	company_name : doc.company_name
+		// };
+		// console.log(doc['company_sno']);
+
+		// newArray.push(doc);
 	// });
-	req.db.close()
+	// console.log(newArray);
+	// req.db.close()
 });
 
 // /* GET home page. */

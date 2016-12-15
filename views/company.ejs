@@ -30,9 +30,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="list-group"></tbody>
-                                            <tr>
-                                                <% companies %>
-                                            </tr>
+                                            <% companies.forEach(function(company) { %>
+                                                <tr>
+                                                    <td><%= company.company_name %> </td>
+                                                    <td><%= company.company_name %> </td>
+                                                    <td><%= company.company_name %> </td>
+                                                </tr>
+                                            <% }); %>
                                         </table>
                                     </div>
                                 </div>
