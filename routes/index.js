@@ -3,18 +3,21 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
+// var db = mongo.db("mongodb://localhost:27017/tnbx_node",{native_parser:true});
 
 
 /* GET company page. */
+	newArray = [];
 router.get('/', function(req, res) {
-    var db = req.db;
-    // var collection = db.get('companies');
-    console.log(db);
-    // collection.find({},{},function(e,docs){
-    //     res.render('company', {
-    //         "title" :"company"
-    //     });
-    // });
+	req.db.collection('companies').find().each(function(err, doc) {
+		newArray.push(doc);
+	});
+	console.log(newArray);
+	// res.render('company', {
+	// 	'title':'Company',
+	// 	'companies':newArray
+	// });
+	req.db.close()
 });
 
 // /* GET home page. */
