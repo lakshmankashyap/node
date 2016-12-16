@@ -29,14 +29,15 @@
                                                     <th>View Securities</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="list-group"></tbody>
-                                            <% companies.forEach(function(company) { %>
-                                                <tr>
-                                                    <td><%= company.company_name %> </td>
-                                                    <td><%= company.company_name %> </td>
-                                                    <td><%= company.company_name %> </td>
-                                                </tr>
-                                            <% }); %>
+                                            <tbody class="list-group">
+                                                <% companies.forEach(function(company) { %>
+                                                    <tr>
+                                                        <td><%= company.company_sno %></td>
+                                                        <td><a href='#'><%= company.company_name %></a></td>
+                                                        <td><a href="#" class="btn btn-info btn-sm" title="View Company Securities">Securites</a></td>
+                                                    </tr>
+                                                <% }); %>
+                                            </tbody> 
                                         </table>
                                     </div>
                                 </div>
@@ -82,32 +83,6 @@
     <%- include('partials/footer') %>
     <%- include('partials/js') %>
     <script type="text/javascript">
-        // $(function () {
-        //     getList();
-        // })
-
-        // function getList() {
-        //     var request = {};
-        //     request.action = "company-list";
-        //     $.ajax({
-        //         type    :   'POST',
-        //         url     :   '/createCompany',
-        //         data    :   request
-        //     }).done(function(res) {
-        //         res = $.parseJSON(res);
-        //         if (res.status == "success") {
-        //             var html = '';
-        //             $.each(res.data, function(i, company) {
-        //                 html += '<tr>'+
-        //                             '<td>'+(company.company_sno)+' </td>'+
-        //                             '<td> <a href="#" title="ID: '+company.company_id+'">'+company.company_name+' </a></td>'+
-        //                             '<td><a href="./security.html?company_sno='+company.company_sno+'" class="btn btn-info btn-sm" title="View Company Securities"> Securities </a></td>'+
-        //                         '</tr>';
-        //             });
-        //             $('#company-list-table tbody').html(html);
-        //         }
-        //     });
-        // }
 
         function createCompany(event) {
             event.preventDefault();
@@ -124,7 +99,6 @@
                         $(".modal").modal("hide");
                         toastr.info(response.message);
                     }
-                    toastr.info(response.message);
                 });
             }
         }

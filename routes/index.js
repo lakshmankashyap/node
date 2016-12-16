@@ -12,40 +12,37 @@ var db = mongo.db("mongodb://localhost:27017/tnbx_node",{native_parser:true});
 /* GET company page. */
 router.get('/', function(req, res) {
 	db.bind('companies');
-	db.companies.find().toArray(function(err, items) {
+	db.companies.find({}).toArray(function(err, items) {
 		res.render('company', {
-			'title':'companies',
+			'title':'Companies',
 			'companies':items
 		});
-	db.close();
 	});
-	// db.collection('companies').find().each(function(err, doc) {
-		// var company = {
-		// 	// id : doc._id,
-		// 	company_sno : doc.company_sno,
-		// 	company_id : doc.company_id,
-		// 	company_name : doc.company_name
-		// };
-		// console.log(doc['company_sno']);
-
-		// newArray.push(doc);
-	// });
-	// console.log(newArray);
-	// req.db.close()
 });
 
-// /* GET home page. */
-// router.get('/', function(req, res) {
-// 	res.render('company', { title: 'company' });
-// });
-
 router.get('/auction-details', function(req, res) {
-	res.render('auction-details', { title: 'auction-details' });
+	db.bind('auctions');
+	db.auctions.find({"auction_security_sno":req.query.auction_sno}).toArray(function(err, items) {
+		res.render('auction-details', {
+			'title':'auction-details',
+			'auction-details':items,
+		});
+	});
+	// res.send(JSON.stringify({status: "success", message: "Create Successfully", data: items}));
 });
 
 router.get('/security', function(req, res) {
-	res.render('security', { title: 'security' });
+	db.bind('securities');
+	db.securities.find().toArray(function(err, items) {
+		res.render('security', {
+			'title':'Security',
+			'securities':items
+		});
+	console.log(items);
+	});
 });
+
+//-- create company --//
 
 router.post('/createCompany', function(req, res) {
 	var db = req.db;
@@ -66,6 +63,52 @@ router.post('/createCompany', function(req, res) {
 		}else{
 			res.send(JSON.stringify({status: "success", message: "Create Successfully", data: company}));
 		}
+	});
+});
+
+//-- create Security --//
+
+router.post('/createSecurity', function(req, res) {
+	var db = req.db;
+	// Set our collection
+	var security = { 
+		company_sno		: 1,
+		security_symbol	: req.body.security_symbol,
+		security_type	: req.body.security_type,
+	}
+
+	db.collection('securities').insert(security, function (error, doc) {
+		if(error){
+			res.send("Could not insert new security.");
+		}else{
+			res.send(JSON.stringify({status: "success", message: "Create Successfully", data: security}));
+		}
+	});
+});
+
+//-- crete auction --//
+
+router.post('/createAuction', function(req, res) {
+	var db = req.db;
+	// Set our collection
+	var auctions = {
+		auction_security_sno 				: 2,
+		number_for_sale 					: req.body.number_for_sale,
+		security_type 						: 10,
+		road_show_start_date_time 			: req.body.road_show_start_date_time,
+		auction_start_date_time 			: req.body.auction_start_date_time,
+		auction_end_date_time 				: req.body.auction_end_date_time,
+		cease_bid_cancellation_date_time 	 :req.body.cease_bid_cancellation_date_time,
+		min_price 							: req.body.min_price,
+		max_price 							: req.body.max_price, 
+	}
+
+	db.collection('auctions').insert(auctions, function (error, doc) {
+		if(error){
+			res.send("Could not insert new auctions.");
+		}else{
+			res.send(JSON.stringify({status: "success", message: "Create Successfully", data: auctions}));
+		} 
 	});
 });
 

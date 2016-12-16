@@ -30,7 +30,17 @@
                                                     <th>Security Auction</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="list-group"></tbody>
+                                            <tbody class="list-group">
+                                                <% securities.forEach(function(security) { %>
+                                                    <tr>
+                                                        <td><%= security.company_sno %> </td>
+                                                        <td><%= security.security_type %> </td>
+                                                        <td><%= security.security_symbol %> </td>
+                                                        <td><button type="button" data-sno="'+security.auction_security_sno+'" class="btn btn-xs btn-primary create-auction" data-tittle="View Auction">Create Auction</button> | <a href="/auction-details?auction_sno=<%= security.company_sno %>" class="btn btn-xs btn-primary show-auction" data-tittle="View Auction">View Auction</a>
+                                                        </td>
+                                                    </tr>
+                                                <% }); %>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -297,3 +307,85 @@
     </div>
     <%- include('partials/footer') %>
     <%- include('partials/js') %>
+    <script type="text/javascript">
+        $(function () {
+            $('#road_show_start_date_time, #auction_start_date_time, #auction_end_date_time, #cease_bid_cancellation_date_time').datetimepicker({
+                format : 'DD/MM/YYYY HH:mm',
+                useCurrent : false,
+            });
+
+        });
+
+        function createSecurity() {
+            event.preventDefault();
+            if (validateCreateSecurity()) {
+                var request = {};
+                // request.company_sno = $("#company_sno").val();
+                request.security_type = $("#security_type").val();
+                request.security_symbol = $("#security_symbol").val();
+                $.ajax({
+                    type    :   'POST',
+                    url     :   '/createSecurity',
+                    data    :   request,
+                }).done(function(response) {
+                    response = $.parseJSON(response);
+                    if (response.status == "success") {
+                        $(".modal").modal("hide");
+                        toastr.info(response.message);
+                    }
+                });
+            }
+        }
+
+        function validateCreateSecurity() {
+            // if ($("#company_sno").val() == "") {return false;}
+            if ($("#security_type").val() == "") {return false;}
+            if ($("#security_symbol").val() == "") {return false;}
+            return true;
+        }
+
+
+            $(".create-auction").off("click");
+            $(".create-auction").on("click", function(event) {
+                $("#add-auction-modal #auction_security_sno").val($(this).data("sno"))
+                $("#add-auction-modal").modal("show")
+            });
+
+            // function createAuction() {
+            $("#add-auction-form").off("submit");
+            $("#add-auction-form").on("submit", function(event) {
+                event.preventDefault();
+                if (validateBookAuction()) {
+                    var request = {};
+                    request.action = "create_auction";
+                    request.auction_security_sno = $("#auction_security_sno").val();
+                    request.number_for_sale = $("#number_for_sale").val();
+                    request.road_show_start_date_time = $("#road_show_start_date_time").val();
+                    request.auction_start_date_time = $("#auction_start_date_time").val();
+                    request.auction_end_date_time = $("#auction_end_date_time").val();
+                    request.cease_bid_cancellation_date_time = $("#cease_bid_cancellation_date_time").val();
+                    request.min_price = $("#min_price").val();
+                    request.max_price = $("#max_price").val();
+                    $.ajax({
+                        type    :   'POST',
+                        url     :   '/createAuction',
+                        data    :   request,
+                    }).done(function(response) {
+                        response = $.parseJSON(response);
+                        if (response.status == "success") {
+                            $(".modal").modal("hide");
+                            toastr.info(response.message);
+                        }
+                    });
+                }
+            })
+        // }
+        function validateBookAuction() {
+            // if (!$("#auction_security_sno").val().length) {return false;}
+            // if (!$("#number_for_sale").val().length) {return false;}
+            // if (!$("#min_price").val().length) {return false;}
+            // if (!$("#max_price").val().length) {return false;}
+            return true;
+        }
+        
+    </script>

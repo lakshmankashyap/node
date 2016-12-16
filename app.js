@@ -16,12 +16,12 @@ app.use(function(req,res,next){
 })
 
 var routes = require('./routes/index');
-// var createCompany = require('./routes/createCompany');
+var api = require('./routes/api');
 
 
 
 app.use('/', routes);
-// app.use('/createCompany', createCompany);
+app.use('/api', api);
 
 
 
