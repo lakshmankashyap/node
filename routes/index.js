@@ -22,11 +22,12 @@ router.get('/', function(req, res) {
 
 router.get('/auction-details', function(req, res) {
 	db.bind('auctions');
-	db.auctions.find({"auction_security_sno":req.query.auction_sno}).toArray(function(err, items) {
+	db.auctions.find({auction_security_sno:2}).toArray(function(err, items) {
 		res.render('auction-details', {
 			'title':'auction-details',
-			'auction-details':items,
+			'auction_details':items,
 		});
+		console.log(items);
 	});
 	// res.send(JSON.stringify({status: "success", message: "Create Successfully", data: items}));
 });
@@ -38,7 +39,6 @@ router.get('/security', function(req, res) {
 			'title':'Security',
 			'securities':items
 		});
-	console.log(items);
 	});
 });
 
